@@ -1,6 +1,13 @@
 import { NavLink } from "react-router-dom";
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import useAuth from "../hooks/useAuth";
+import toast from "react-hot-toast";
 const Navbar = () => {
+  const { user, logOut } = useAuth();
+  const handleLogout = async () => {
+    await logOut();
+    toast.success("Logged out");
+  };
   return (
     <div className="flex gap-5 items-center text-white font-bold text-[16px]">
       <NavLink
@@ -44,21 +51,25 @@ const Navbar = () => {
         Our Shop
       </NavLink>
       <NavLink
-        to="/cart"
+        to="/dashboard/cart"
         className={({ isActive, isPending }) =>
           isPending ? "pending" : isActive ? "" : ""
         }
       >
         <AiOutlineShoppingCart className="text-2xl bg-green-600 m-2 rounded-full p-1" />
       </NavLink>
-      <NavLink
-        to="/login"
-        className={({ isActive, isPending }) =>
-          isPending ? "pending" : isActive ? "border border-yellow-400" : ""
-        }
-      >
-        Login
-      </NavLink>
+      {user ? (
+        <button onClick={handleLogout}>Logout</button>
+      ) : (
+        <NavLink
+          to="/login"
+          className={({ isActive, isPending }) =>
+            isPending ? "pending" : isActive ? "border border-yellow-400" : ""
+          }
+        >
+          Login
+        </NavLink>
+      )}
     </div>
   );
 };

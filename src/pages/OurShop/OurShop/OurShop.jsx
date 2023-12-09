@@ -11,7 +11,6 @@ const OurShop = () => {
   const categories = ["SALAD", "PIZZA", "SOUPS", "DESSERTS", "DRINKS"];
   const { category } = useParams();
   const initialTabIndex = categories.indexOf(category);
-  console.log(initialTabIndex);
   const [tabIndex, setTabIndex] = useState(initialTabIndex);
   const { pizza, dessert, salad, soup, drinks } = useAllData();
   return (

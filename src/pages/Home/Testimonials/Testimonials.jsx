@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -7,13 +6,18 @@ import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { FaQuoteLeft } from "react-icons/fa";
 import SectionTitle from "../../../components/SectionTitle";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 const Testimonials = () => {
-  const [reviews, setReviews] = useState([]);
-  useEffect(() => {
-    fetch("../reviews.json")
-      .then((res) => res.json())
-      .then((data) => setReviews(data));
-  }, []);
+  const axiosPublic = useAxiosPublic();
+
+  const { data: reviews = [] } = useQuery({
+    queryKey: ["review"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/reviews");
+      return res.data;
+    },
+  });
 
   return (
     <div className="my-16">
